@@ -2,6 +2,11 @@ set nocompatible
 syntax enable
 filetype off
 
+set hidden
+
+set nobackup
+set nowritebackup
+
 set laststatus=2
 set ignorecase
 set showcmd
@@ -21,43 +26,33 @@ set directory=~/.config/nvim/backup/.swp//
 call plug#begin('~/.config/nvim/plugged')
 
 " Functionality
-Plug 'Shougo/vimproc.vim'
+Plug 'chr4/nginx.vim'
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdcommenter'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'sbdchd/neoformat'
-
-" Languages
-" Ansible
-Plug 'pearofducks/ansible-vim'
 
 " CSS
 Plug 'ap/vim-css-color'
 
 " Javascript
 Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
 Plug 'elzr/vim-json'
 
 " Typescript
 "" Syntax
 Plug 'HerringtonDarkholme/yats.vim'
 "" IDE
-Plug 'mhartington/nvim-typescript'
+Plug 'mhartington/nvim-typescript', { 'do': './install.sh' }
 
-" Elm
-Plug 'elmcast/elm-vim'
+" Other languages
+Plug 'rust-lang/rust.vim'
 
-" Nginx config
-Plug 'chr4/nginx.vim'
-
-"Go lang
-Plug 'fatih/vim-go'
-Plug 'godoctor/godoctor.vim'
-Plug 'zchee/deoplete-go', { 'do': 'make'}
-Plug 'jodosha/vim-godebug'
+"
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 " Linters
 " Asynchronous Lint Engine
@@ -66,7 +61,6 @@ Plug 'w0rp/ale'
 Plug 'editorconfig/editorconfig-vim'
 
 " Navigation
-Plug 'vim-scripts/taglist.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'mileszs/ack.vim'
@@ -80,6 +74,7 @@ Plug 'vim-airline/vim-airline'
 
 " Colorschemes
 Plug 'mhartington/oceanic-next'
+
 
 call plug#end()
 
@@ -98,9 +93,10 @@ let g:ctrlp_cmd = 'CtrlP'
 let NERDTreeShowHidden = 1
 let g:NERDTreeWinSize = 50
 
-
 " javascrtipt settings
 let g:javascript_plugin_jsdoc = 1
+
+let g:jsx_ext_required = 1
 
 " typescript settings
 let g:tsuquyomi_completion_detail = 1
@@ -115,8 +111,6 @@ autocmd Filetype json setlocal ts=2 sw=2 sts=0 expandtab
 autocmd Filetype yaml setlocal ts=2 sw=2 sts=0 expandtab
 autocmd Filetype scss setlocal ts=4 sw=4 sts=0 expandtab
 autocmd Filetype html setlocal ts=4 sw=4 sts=0 expandtab
-autocmd Filetype elm setlocal ts=4 sw=4 sts=0 expandtab
-autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
 
 " Auto-close deoplete preview window
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
@@ -140,24 +134,8 @@ let g:NERDTrimTrailingWhitespace = 1
 let g:typescript_indent_disable = 1
 
 let g:airline_powerline_fonts = 1
-" let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_at_startup = 1
 " let g:deoplete#num_processes = 1
-
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_structs = 1
-let g:go_highlight_types = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_extra_types = 1
-let g:go_fmt_command = "goimports"
-let g:go_auto_sameids = 1
-let g:deoplete#sources#go#gocode_binary = '/Users/someone/projects/go/bin/gocode'
-
-autocmd FileType go nmap <leader>b  <Plug>(go-build)
-autocmd FileType go nmap <leader>r  <Plug>(go-run)
-autocmd FileType go nmap <leader>t  <Plug>(go-test)
-let g:go_list_type = "quickfix"
 
 " This line enables the true color support.
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
@@ -165,27 +143,8 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 " Note, the above line is ignored in Neovim 0.1.5 above, use this line instead.
 set termguicolors
 
-" let g:tagbar_type_typescript = {
-"   \ 'ctagsbin' : 'tstags',
-"   \ 'ctagsargs' : '-f-',
-"   \ 'kinds': [
-"     \ 'e:enums:0:1',
-"     \ 'f:function:0:1',
-"     \ 't:typealias:0:1',
-"     \ 'M:Module:0:1',
-"     \ 'I:import:0:1',
-"     \ 'i:interface:0:1',
-"     \ 'C:class:0:1',
-"     \ 'm:method:0:1',
-"     \ 'p:property:0:1',
-"     \ 'v:variable:0:1',
-"     \ 'c:const:0:1',
-"   \ ],
-"   \ 'sort' : 0
-"   \ }
-
-
 let g:ale_linters = {
+\    'javascript': ['eslint'],
 \    'typescript': ['tslint'],
 \}
 let g:ale_typescript_tslint_executable = 'tslint'
@@ -198,10 +157,10 @@ function! Multiple_cursors_after()
     let b:deoplete_disable_auto_complete = 0
 endfunction
 
+" Navigate by visual lines
+nnoremap <expr> j v:count ? 'j' : 'gj'
+nnoremap <expr> k v:count ? 'k' : 'gk'
 
-" let b:ale_fixers = [
-" \   'DoSomething',
-" \   'eslint',
-" \   {buffer, lines -> filter(lines, 'v:val !=~ ''^\s*//''')},
-" \]
+cabbrev Ack Ack!
 
+let g:deoplete#auto_completion_start_length = 0
