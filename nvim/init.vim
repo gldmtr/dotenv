@@ -47,6 +47,7 @@ Plug 'lewis6991/gitsigns.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'folke/which-key.nvim'
 Plug 'hrsh7th/nvim-cmp'
+Plug 'akinsho/toggleterm.nvim'
 
 " LSP
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -56,6 +57,7 @@ Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'jose-elias-alvarez/null-ls.nvim'
 Plug 'jayp0521/mason-null-ls.nvim'
+Plug 'j-hui/fidget.nvim'
 
 " UI
 Plug 'folke/lsp-colors.nvim'
@@ -124,6 +126,7 @@ lua require 'user/gitsigns'
 lua require 'user/treesitter'
 lua require 'user/whichkey'
 lua require 'user/lsp'
+lua require 'user/toggleterm'
 
 " javascrtipt settings
 let g:javascript_plugin_jsdoc = 1

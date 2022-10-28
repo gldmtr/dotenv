@@ -1,4 +1,7 @@
-local servers = { 'tsserver' }
+local servers = {
+	'tsserver',
+	'yamlls'
+}
 local null_servers = { 'eslint_d' }
 
 local lspconfig = require 'lspconfig'
