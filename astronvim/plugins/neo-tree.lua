@@ -9,6 +9,8 @@ local config = {
     window = {
       mappings = {
         ['/'] = false,
+        ['.'] = false,
+        ['z'] = false,
       },
     },
   },
